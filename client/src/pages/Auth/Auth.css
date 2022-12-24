@@ -33,7 +33,7 @@ background-repeat: repeat;
  -moz-text-fill-color:  transparent;
 }   
 .webname>h6{
-    font-size: .85rem;
+    font-size: 1rem;
     font-weight: bold;
 }
 .infoForm{
@@ -49,14 +49,16 @@ background-repeat: repeat;
     outline: none;
     background-color: var(--inputColor);
     border-radius: 8px;
-    padding:20px;
-    flex:1
+    padding:10px;
+    flex:1;
+ 
 }
 .infoForm>div{
     display: flex;
     gap: 1rem;
-    height: 2rem;
-    width: 90%;
+    height: .5rem;
+width: 90%;    
+margin-top: 50px;
 }
 .infoButton{
     width: 10rem;

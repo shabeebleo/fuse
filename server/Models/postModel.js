@@ -2,10 +2,16 @@ import mongoose from "mongoose";
 
 const PostSchema = mongoose.Schema(
   {
-    userId: { type: String, required: true },
+    userId: { 
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref:'User' 
+    },
     desc: String,
-    image: String,
+    image: { type: String, required: true },
     likes: [],
+    liked:{type:Boolean},
+    cloudinary_id:{type: String}
   },
   {
     timestamps: true,

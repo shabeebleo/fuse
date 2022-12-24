@@ -1,11 +1,22 @@
-import  express  from "express"; 
-import { createPost, deletePost, getPost, getTimelinePosts, likePost, updatePost } from "../Controllers/PostController.js";
-const router =express.Router()
+import express from "express";
+import {
+  createPost,
+  deletePost,
+  getPost,
+  getTimelinePosts,
+  likePost,
+  updatePost,
+} from "../Controllers/PostController.js";
+import protect from "../middlewares/authMiddleware.js";
+import { uploads } from "../utils/multer.js";
+const router = express.Router();
 
-router.post('/',createPost)
-router.get('/:id',getPost)
-router.put('/:id',updatePost)
-router.delete('/:id',deletePost)
-router.put('/:id/like',likePost)
-router.get('/:id/timeline',getTimelinePosts)
-export default router
+router.post("/", uploads.single("image"), createPost);
+router.get("/", protect, getPost);
+router.put("/:id", protect, updatePost);
+router.delete("/:id", protect, deletePost);
+router.put("/:id/like", protect, likePost);
+router.get("/timeline", protect, getTimelinePosts);
+export default router;
+
+//uploads.single("myImage"),

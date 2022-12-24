@@ -1,64 +1,160 @@
-import React ,{useState,useRef} from 'react'
-import Profile from '../../img/profileImg.jpg'
-import './Postshare.css'
-import { UilScenery } from '@iconscout/react-unicons'
-import { UilPlayCircle } from '@iconscout/react-unicons'
-import { UilLocationPoint } from '@iconscout/react-unicons'
-import { UilSchedule } from '@iconscout/react-unicons'
-import { UilTimes } from '@iconscout/react-unicons'
+import React, { useState, useRef, useEffect } from "react";
+import Profile from "../../img/profileImg.jpg";
+import "./Postshare.css";
+import { UilScenery } from "@iconscout/react-unicons";
+import { UilPlayCircle } from "@iconscout/react-unicons";
+import { UilLocationPoint } from "@iconscout/react-unicons";
+import { UilSchedule } from "@iconscout/react-unicons";
+import { UilTimes } from "@iconscout/react-unicons";
+import { useDispatch, useSelector } from "react-redux";
+import { setPosts } from "../../redux/postSlice";
+import { hideloading, showloading } from "../../redux/alertSlice";
+import { toast } from "react-hot-toast";
+import axios from "axios";
 
 function PostShare() {
-const [image,setImage]=useState(null)
-const imageRef=useRef(null)
-const onImageChange=(event)=>{
-if(event.target.files && event.target.files[0]){
-    let img=event.target.files[0]
-    setImage ({
-        image:URL.createObjectURL(img)
-    })
-}
-}
-    return (
-        <div className='PostShare'>
-            <img src={Profile} alt="" />
-            <div>
-                <input type="text"
-                    placeholder="what's happening" />
-                <div className='postOptions'>
-                    <div className="options" style={{color:'var(--photo)'}}
-                    onClick={()=> imageRef.current.click()}>
-                        <UilScenery />
-                        Photo
-                    </div>
-                    <div className="options" style={{color:'var(--video)'}}>
-                        <UilPlayCircle />
-                        Video
-                    </div>
-                    <div className="options" style={{color:'var(--location)'}}>
-                        <UilLocationPoint />
-                        Location
-                    </div>
-                    <div className="options" style={{color:'var(--teal)'}}>
-                        <UilSchedule />
-                        Schedule
-                    </div>
-                    <button className='button ps-button' style={{height:'2rem',width:'4.5rem'}}>
-                        share
-                    </button>
-                    <div style={{display:'none'}}>
-                        <input type="file" name='myImage' ref={imageRef } onChange={onImageChange}/>
-                    </div>
-                </div>
-{image &&  (
-    <div className="previewImage">
-        <UilTimes onClick={()=>{setImage(null)}}/>      
-        <img src={image.image} alt="" />
-    </div>
+  const dispatch = useDispatch();
+  const { userData } = useSelector((state) => state.user);
+  const userId = userData?._id;
+  console.log(userId, "user.................");
+  const [image, setImage] = useState(null);
+  const imageRef = useRef(null);
+  const [formData, setFormData] = useState({
+    desc: "",
+  });
+
+  const onImageChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      let img = event.target.files[0];
+      setImage({ image: img });
+    }
+  };
+
+  function handleChange(e) {
+    const name = e.target.name;
+    const value = e.target.value;
+    setFormData((data) => ({ ...data, [name]: value }));
+  }
+
   
-)}
-            </div>
+  const getAllPosts = async () => {
+    try {
+      const response = await axios.get("/posts/timeline", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+      dispatch(setPosts(response.data));
+    } catch (error) {}
+  };
+  const reset = () => {
+    document.getElementById("desc").value = null;
+    setImage(null);
+  };
+
+  const uploadPost = async () => {
+    try {
+      dispatch(showloading());
+      console.log(image, "imageimageimage");
+      formData.userId = userId;
+
+      console.log(formData, "formDa-newPost-taformDataformData");
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      };
+      console.log(formData, "formDamData");
+      const response = await axios.post("/posts", formData, config);
+      console.log(response, "response of post ethi maka");
+      reset();
+      dispatch(hideloading());
+    } catch (error) {
+      console.log(error);
+    }
+
+    //to update state of posts to avoid only getting updating post while reloading
+    getAllPosts();
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!image) {
+      toast.error("Please choose a file");
+    }
+    uploadPost();
+  };
+  useEffect(() => {
+    console.log(image, "useeffext image");
+    setFormData({ ...formData, ...image });
+    console.log(formData, "formData-useEffect");
+  }, [image]);
+
+  return (
+    <div className="PostShare">
+      <img src={Profile} alt="" />
+
+      <form encType="multipart/form-data" onSubmit={handleSubmit}>
+        <input
+          id="desc"
+          name="desc"
+          onChange={handleChange}
+          required
+          type="text"
+          placeholder="what's happening"
+        />
+        <div className="postOptions">
+          <div
+            className="options"
+            style={{ color: "var(--photo)" }}
+            onClick={() => imageRef.current.click()}
+          >
+            <UilScenery />
+            Photo
+          </div>
+          <div className="options" style={{ color: "var(--video)" }}>
+            <UilPlayCircle />
+            Video
+          </div>
+          <div className="options" style={{ color: "var(--location)" }}>
+            <UilLocationPoint />
+            Location
+          </div>
+          <div className="options" style={{ color: "var(--teal)" }}>
+            <UilSchedule />
+            Schedule
+          </div>
+          <button
+            className="button ps-button"
+            style={{ height: "2rem", width: "4.5rem" }}
+            type="submit"
+          >
+            share
+          </button>
+          <div style={{ display: "none" }}>
+            <input
+              type="file"
+              name="image"
+              ref={imageRef}
+              multiple={false}
+              onChange={onImageChange}
+            />
+          </div>
         </div>
-    )
+        {image && (
+          <div className="previewImage">
+            <UilTimes
+              onClick={() => {
+                setImage(null);
+              }}
+            />
+
+            <img src={URL.createObjectURL(image.image)} alt="" />
+          </div>
+        )}
+      </form>
+    </div>
+  );
 }
 
-export default PostShare
+export default PostShare;

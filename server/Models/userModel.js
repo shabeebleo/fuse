@@ -14,6 +14,11 @@ const UserSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    
+    email: {
+      type: String,
+      required: true,
+    },
     lastname: {
       type: String,
       required: true,
@@ -21,6 +26,10 @@ const UserSchema = mongoose.Schema(
     isAdmin: {
       type: Boolean,
       default: false,
+    },
+    posts: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "Posts",
     },
     profilePicture: String,
     coverPicture: String,
@@ -34,5 +43,5 @@ const UserSchema = mongoose.Schema(
   { timestamps: true }
 )
 
-const UserModel=mongoose.model("users",UserSchema);
-export default UserModel
+export default mongoose.model("User",UserSchema);
+

@@ -1,15 +1,77 @@
 import React, { useState } from "react";
 import "./Auth.css";
 import Logo from "../../img/logo.png";
-
+import axios from "axios";
+import toast from "react-hot-toast";
+import { Link,useNavigate } from "react-router-dom";
+import { useSelector,useDispatch } from "react-redux";
+import { hideloading, showloading } from "../../redux/alertSlice";
 function Auth() {
-    const [isSignUp,setIsSignUp]=useState(false)
+  const [isSignUp, setIsSignUp] = useState(true);
+  const [data, setData] = useState({});
+  const [confirmpass, setConfirmpass] = useState(true);
+const dispatch=useDispatch()
+  const navigate=useNavigate()
+// const reset=()=>{
+//   setConfirmpass(true)
+// }
+  const handleChange = (e) => {
+    setData({ ...data, [e.target.name]: e.target.value });
+    console.log(data,"dsdsdsdsd")
+  };
 
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    if(isSignUp){
+      try {
+        dispatch(showloading())
+        const response=await axios.post('/auth/register',data)
+        dispatch(hideloading())
+        if(response.data.success){
+          toast.success(response.data.message)
+          toast('redirecting to login page')
+          setIsSignUp(false)
+        }else{
+          console.log(response,"errorrr")
+          toast.error(response.data.message)
+        }
+        console.log(response,"response vanna")
+      } catch (error) {
+        dispatch(hideloading())
+        toast.error('something went wrong')
+      }     
+    }else{
+      try {
+        dispatch(showloading())
+        const response=await axios.post('/auth/login',data)
+        dispatch(hideloading())
+        if(response.data.success){
+          toast.success(response.data.message)
+          toast('redirecting to home page')
+          console.log(response,"respons")
+          localStorage.setItem("token",response.data.token)
+        navigate('/home')
+        }else{
+         
+          console.log(response,"errorrr")
+          toast.error(response.data.message)
+        }
+        console.log(response,"response vanna")
+      } catch (error) {
+        dispatch(hideloading())
+        toast.error('something went wrong')
+      }
      
+    }
+ 
+  }
+  // if (isSignUp&&data.confirmpass) {
+  //   if (data.password !== data.confirmpass) setConfirmpass(false);
+  // }
   return (
     <div className="Auth">
       {/* left side */}
-      <div className="a-left">
+      <div className="a-left">  ``
         <img src={Logo} alt="" />
         <div className="webname">
           <h1>Fuse</h1>
@@ -17,29 +79,24 @@ function Auth() {
         </div>
       </div>
       {/* right side */}
+      <h1>{isSignUp ? SignUp() : Login()}</h1>
+    </div>
+  );
+  //login
+  function Login() {
+    return (
       <div className="a-right">
-        <form className="infoForm authForm">
-          <h3 style={{ color: "#008080" }}>Sign Up</h3>
-          <div>
-            <input
-              type="text"
-              placeholder="First Name"
-              className="infoInput"
-              name="firstname"
-            />
-            <input
-              type="text"
-              placeholder="Last Name"
-              className="infoInput"
-              name="lastname"
-            />
-          </div>
+        <form className="infoForm authForm" onSubmit={handleSubmit}>
+          <h3 style={{ color: "#008080" }}>Login</h3>
+
           <div>
             <input
               type="text"
               placeholder="Username"
               className="infoInput"
               name="username"
+              onChange={handleChange}
+              value={data.username}
             />
           </div>
           <div>
@@ -48,17 +105,102 @@ function Auth() {
               placeholder="Password"
               className="infoInput"
               name="password"
-            />
-            <input
-              type="text"
-              placeholder="Confiirm Password"
-              className="infoInput"
-              name="confirmpass"
+              onChange={handleChange}
+              value={data.password}
             />
           </div>
 
           <div>
-            <span style={{ fontSize: "12px" }}>
+            <span
+              style={{ fontSize: "12px", cursor: "pointer" }}
+              onClick={() => {
+                setIsSignUp(true);
+                setData({})
+              }}
+            >
+              Don't have an account? Register!
+            </span>
+          </div>
+          <button className="button infoButton" type="submit">
+            Login
+          </button>
+        </form>
+      </div>
+    );
+  }
+  //SignUp
+  function SignUp() {
+    return (
+      <div className="a-right">
+        <form className="infoForm authForm" onSubmit={handleSubmit}>
+          <h3 style={{ color: "#008080" }}>Sign Up</h3>
+          <div>
+            <input
+              type="text"
+              placeholder="First Name"
+              className="infoInput"
+              name="firstname"
+              onChange={handleChange}
+              value={data.firstname}
+            />
+            <input
+              type="text"
+              placeholder="Last Name"
+              className="infoInput"
+              name="lastname"
+              onChange={handleChange}
+              value={data.lastname}
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              placeholder="Username"
+              className="infoInput"
+              name="username"
+              onChange={handleChange}
+              value={data.username}
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              placeholder="email"
+              className="infoInput"
+              name="email"
+              onChange={handleChange}
+              value={data.email}
+            />
+          </div>
+          <div>
+            <input
+              type="text"
+              placeholder="Password"
+              className="infoInput"
+              name="password"
+              onChange={handleChange}
+              value={data.password}
+            />
+            <input
+              type="text"
+              placeholder="Confirm Password"
+              className="infoInput"
+              name="confirmpass"
+              onChange={handleChange}
+              value={data.confirmpass}
+            />
+          </div>
+          <span style={{ display: confirmpass ? "none" : "block" ,color:"red",fontSize:"14px",alignSelf:"flex-end"}} >
+            *confirm password is not same
+          </span>
+          <div>
+            <span
+              style={{ fontSize: "12px", cursor: "pointer" }}
+              onClick={() => {
+                setIsSignUp(false);
+                setData({})
+              }}
+            >
               Already have an account? Login!
             </span>
           </div>
@@ -67,97 +209,10 @@ function Auth() {
           </button>
         </form>
       </div>
-    </div>
-  );
+    );
+  }
 }
-// function Login() {
-//   return (
-//     <div className="a-right">
-//       <form className="infoForm authForm">
-//         <h3 style={{ color: "#008080" }}>Login</h3>
 
-//         <div>
-//           <input
-//             type="text"
-//             placeholder="Username"
-//             className="infoInput"
-//             name="username"
-//           />
-//         </div>
-//         <div>
-//           <input
-//             type="text"
-//             placeholder="Password"
-//             className="infoInput"
-//             name="password"
-//           />
-//         </div>
-
-//         <div>
-//           <span style={{ fontSize: "12px" }}>
-//             Don't have an account? Register!
-//           </span>
-//         </div>
-//         <button className="button infoButton" type="submit">
-//           Login
-//         </button>
-//       </form>
-//     </div>
-//   );
-// }
-function SignUp() {
-  return (
-    <div className="a-right">
-      <form className="infoForm authForm">
-        <h3 style={{ color: "#008080" }}>Sign Up</h3>
-        <div>
-          <input
-            type="text"
-            placeholder="First Name"
-            className="infoInput"
-            name="firstname"
-          />
-          <input
-            type="text"
-            placeholder="Last Name"
-            className="infoInput"
-            name="lastname"
-          />
-        </div>
-        <div>
-          <input
-            type="text"
-            placeholder="Username"
-            className="infoInput"
-            name="username"
-          />
-        </div>
-        <div>
-          <input
-            type="text"
-            placeholder="Password"
-            className="infoInput"
-            name="password"
-          />
-          <input
-            type="text"
-            placeholder="Confiirm Password"
-            className="infoInput"
-            name="confirmpass"
-          />
-        </div>
-
-        <div>
-          <span style={{ fontSize: "12px" }}>
-            Already have an account? Login!
-          </span>
-        </div>
-        <button className="button infoButton" type="submit">
-          Sign up
-        </button>
-      </form>
-    </div>
-  );
-}
+//endss
 
 export default Auth;

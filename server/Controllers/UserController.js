@@ -3,11 +3,12 @@ import bcrypt from "bcrypt";
 //get a user
 
 export const getUser = async (req, res) => {
-  const id = req.params.id;
 
+
+const id=req.userId
   try {
     const user = await UserModel.findById(id).select("-password");
-    console.log(user);
+    
     if (user) {
       const userDetails = user._doc;
 
@@ -20,6 +21,32 @@ export const getUser = async (req, res) => {
     res.status(500).json(error);
   }
 };
+//get all users
+
+export const getAllUsers = async (req, res) => {
+
+console.log("getAllUSErs")
+
+    try {
+      const allUsers = await UserModel.find().select("-password");
+      console.log(allUsers,"allUSersssss")
+      if (allUsers) {
+  //       const userDetails = allUsers._doc;
+  // console.log(userDetails,"userDetailsss............")
+        res.status(200).json(allUsers);
+      } else {
+  
+        res.status(404).json("user does't exist");
+      }
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  };
+
+
+
+
+
 
 //update user
 

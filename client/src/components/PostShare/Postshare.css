@@ -10,14 +10,14 @@ border-radius: 50%;
 width: 3rem;
 height: 3rem ;
 }
-.PostShare>div{
+.PostShare>form{
     display: flex;
     flex-direction: column;
     width: 80%;
     gap: 4px;
 
 }
-.PostShare>div>input{
+.PostShare>form>input{
     background-color: #bde4e4;
     border-radius: 10px;
     padding: 10px;
