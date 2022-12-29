@@ -4,7 +4,7 @@ import Home from "./pages/home/Home";
 import Profile from "./pages/Profile/Profile";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ProtectedRoute from "./components/ProtectedRoute.js";
 import PublicRoute from "./components/PublicRoute.js";
 import { useEffect } from "react";
@@ -12,7 +12,6 @@ import { useEffect } from "react";
 function App() {
   const { loading } = useSelector((state) => state.alerts);
 
-  
   return (
     <BrowserRouter>
       {loading && (
@@ -41,6 +40,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
               </ProtectedRoute>
             }
           />

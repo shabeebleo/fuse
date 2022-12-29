@@ -55,18 +55,18 @@ function PostShare() {
   const uploadPost = async () => {
     try {
       dispatch(showloading());
-      console.log(image, "imageimageimage");
+      // console.log(image, "imageimageimage");
       formData.userId = userId;
 
-      console.log(formData, "formDa-newPost-taformDataformData");
+      // console.log(formData, "formDa-newPost-taformDataformData");
       const config = {
         headers: {
           "content-type": "multipart/form-data",
         },
       };
-      console.log(formData, "formDamData");
+      // console.log(formData, "formDamData");
       const response = await axios.post("/posts", formData, config);
-      console.log(response, "response of post ethi maka");
+      // console.log(response, "response of post ethi maka");
       reset();
       dispatch(hideloading());
     } catch (error) {
@@ -85,9 +85,9 @@ function PostShare() {
     uploadPost();
   };
   useEffect(() => {
-    console.log(image, "useeffext image");
+    // console.log(image, "useeffext image");
     setFormData({ ...formData, ...image });
-    console.log(formData, "formData-useEffect");
+    // console.log(formData, "formData-useEffect");
   }, [image]);
 
   return (

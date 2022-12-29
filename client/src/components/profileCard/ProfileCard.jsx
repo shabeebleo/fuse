@@ -1,56 +1,73 @@
-import React from 'react'
-import Cover from '../../img/cover.jpg'
-import Profile from '../../img/profileImg.jpg'
-import './ProfileCard.css'
+import React, { useEffect, useState } from "react";
+import "./ProfileCard.css";
+import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
+
 function ProfileCard() {
+  const location = useLocation();
+  const [modalOpened, setModalOpened] = useState(false);
+  let profileDetails = location?.state?.userData;
+  var { userData } = useSelector((state) => state.user);
+  const { postData } = useSelector((state) => state.posts);
+  const ProfilePage = true;
 
-    const ProfilePage = true
-    return (
-        <div className='ProfileCard'>
-            <div className="ProfileImages">
-                <img src={Cover} alt="" />
-                <img src={Profile} alt="" />
-            </div>
-            <div className="ProfileName">
-                <span>Leo Messi</span>
-                <span>Footballer</span>
-            </div>
-            <div className="followStatus">
-                <hr />
-                <div>
-                    <div className="follow">
-                        <span>followers </span>
-                        <span>7878</span>
+  ///followeresw modal
+  const followers = () => {
 
-                    </div>
-                    <div className="vl">
-                    </div>
-                    <div className="follow">
-                        <span>following</span>
-                        <span>7</span>
+  };
 
-                    </div>
-                    {ProfilePage && (
-                        <>
-                            <div className="vl">
-
-                            </div>
-                            <div className="follow">
-                                <span>3</span>
-                                <span>Posts</span>
-                            </div>
-                        </>
-                    )}
-                </div>
-
-                <hr />
-            </div>
-            {ProfilePage ? '' : <span>My profile</span>}
-          
-        
-
+  return (
+    <div className="ProfileCard">
+      <div className="ProfileImages">
+        <img
+          src={
+            profileDetails
+              ? profileDetails.coverPicture
+              : userData?.coverPicture
+          }
+          alt=""
+        />
+        <img
+          src={
+            profileDetails
+              ? profileDetails.profilePicture
+              : userData?.profilePicture
+          }
+          alt=""
+        />
+      </div>
+      <div className="ProfileName">
+        <span>{userData?.firstname}</span>
+        <span>{userData?.worksat}</span>
+      </div>
+      <div className="followStatus">
+        <hr />
+        <div>
+          <div className="follow">
+            <span onClick={followers}>followers </span>
+            <span>{userData?.followers.length}</span>
+          </div>
+          <div className="vl"></div>
+          <div className="follow">
+            <span>following</span>
+            <span>{userData?.following.length}</span>
+          </div>
+          {ProfilePage && (
+            <>
+              <div className="vl"></div>
+              <div className="follow">
+                <span>Posts</span>
+                <span>{postData?.length}</span>
+              </div>
+            </>
+          )}
         </div>
-    )
+
+        <hr />
+      </div>
+      {ProfilePage ? "" : <span>My profile</span>}
+    </div>
+  );
 }
 
-export default ProfileCard
+export default ProfileCard;
