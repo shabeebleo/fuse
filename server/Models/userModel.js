@@ -14,7 +14,7 @@ const UserSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    
+
     email: {
       type: String,
       required: true,
@@ -22,6 +22,9 @@ const UserSchema = mongoose.Schema(
     lastname: {
       type: String,
       required: true,
+    },
+    followStatus: {
+      type: Boolean,
     },
     isAdmin: {
       type: Boolean,
@@ -32,16 +35,17 @@ const UserSchema = mongoose.Schema(
       ref: "Posts",
     },
     profilePicture: String,
+    profileCloudinary_id: String,
+    coverCloudinary_id: String,
     coverPicture: String,
     about: String,
     livesin: String,
     worksat: String,
     relationship: String,
-    followers: [],
-    following: [],
+    followers: { type: [mongoose.Schema.Types.ObjectId], ref: "User" },
+    following: { type: [mongoose.Schema.Types.ObjectId], ref: "User" },
   },
   { timestamps: true }
-)
+);
 
-export default mongoose.model("User",UserSchema);
-
+export default mongoose.model("User", UserSchema);

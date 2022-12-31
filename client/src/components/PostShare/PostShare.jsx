@@ -44,6 +44,7 @@ function PostShare() {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       });
+      console.log(response.data,"post response in post jsx ")
       dispatch(setPosts(response.data));
     } catch (error) {}
   };
@@ -65,7 +66,7 @@ function PostShare() {
         },
       };
       // console.log(formData, "formDamData");
-      const response = await axios.post("/posts", formData, config);
+      const response = await axios.post(`/posts/createPost/${userId}`, formData, config);
       // console.log(response, "response of post ethi maka");
       reset();
       dispatch(hideloading());
@@ -112,7 +113,7 @@ function PostShare() {
             <UilScenery />
             Photo
           </div>
-          <div className="options" style={{ color: "var(--video)" }}>
+          {/* <div className="options" style={{ color: "var(--video)" }}>
             <UilPlayCircle />
             Video
           </div>
@@ -123,7 +124,7 @@ function PostShare() {
           <div className="options" style={{ color: "var(--teal)" }}>
             <UilSchedule />
             Schedule
-          </div>
+          </div> */}
           <button
             className="button ps-button"
             style={{ height: "2rem", width: "4.5rem" }}

@@ -5,9 +5,14 @@ import Share from "../../img/share.png";
 import Heart from "../../img/like.png";
 import Notlike from "../../img/notlike.png";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { UilTimes } from "@iconscout/react-unicons";
+import { setPosts } from "../../redux/postSlice";
+import { hideloading, showloading } from "../../redux/alertSlice";
 function Post({ data }) {
+
+
+  const dispatch = useDispatch();
   // console.log(data, "daaaaaaaaata");
   const [liked, setLiked] = useState();
   const [likes, setlikes] = useState(data.likes.length);
@@ -52,6 +57,31 @@ function Post({ data }) {
     }
   };
 
+  const getAllPosts = async () => {
+    try {
+      const response = await axios.get("/posts/timeline", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+      console.log(response.data,"post response ")
+      dispatch(setPosts(response.data));
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    getAllPosts();
+  }, []);
+
+
+
+
+
+
+
+
+
+//new comment
   const newComment = async () => {
     const comment = document.getElementById("nwComment").value;
 
@@ -94,6 +124,7 @@ function Post({ data }) {
   const deleteComments = async (commentId) => {
     // console.log(username, "username in delete commets");
     try {
+     
       const response = await axios.post(
         `/posts/delete/${commentId}`,
         {username:username}
@@ -103,6 +134,7 @@ document.getElementById(commentId).style.display="none"
     } catch (error) {
       console.log(error);
     }
+
   };
 
   //getComments
@@ -131,10 +163,40 @@ document.getElementById(commentId).style.display="none"
   //   "allCommentsallCommentsallCommentsallCommentsallCommentsallComments"
   // );
 
+ const postDelete=async()=>{
+
+  try {
+    dispatch(showloading());
+    const response=await axios.delete(`/posts/${postId}`, {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    })
+    dispatch(hideloading());
+    console.log(response,"user deleting response")
+  } catch (error) {
+    console.log(error)
+  }
+ getAllPosts();
+
+ }
+
   return (
     <div className="Post">
       <h4>{data.userId.username}</h4>
+      <div className="Post">
+        <div className="PostDelete">
+        <UilTimes
+              onClick={
+                postDelete
+              }
+              
+              
+            />
+        </div>
+    
       <img src={data.image} alt="" />
+      </div>
       <div className="postReact">
         <img onClick={likeUnlikePost} src={liked ? Heart : Notlike} alt="" />
         <img onClick={getComments} src={Comment} alt="" />

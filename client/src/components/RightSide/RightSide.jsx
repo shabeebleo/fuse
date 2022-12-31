@@ -2,12 +2,18 @@ import React, { useState } from 'react'
 import './RightSide.css'
 import Home from '../../img/home.png'
 import Noti from '../../img/noti.png'
+import { useNavigate } from "react-router-dom";
 import Comment from '../../img/comment.png'
 import { UilSetting } from '@iconscout/react-unicons'
-import TrendCard from '../TrendCard/TrendCard'
-import ShareModal from '../ShareModal/ShareModal'
 
+import ShareModal from '../ShareModal/ShareModal'
+import logOut from '../../img/logOut.png'
 function RightSide() {
+    const navigate = useNavigate();
+    const logOutt = () => {
+        localStorage.removeItem("token");
+        navigate("/");
+      };
     const [modalOpened, setModalOpened] = useState(false)
     return (
         <div className='RightSide'>
@@ -15,18 +21,10 @@ function RightSide() {
                 <img src={Home} alt="" />
                 <img src={Noti} alt="" />
                 <UilSetting />
-                <img src={Comment} alt="" />
+                <img onClick={logOutt} src={logOut} alt="" />
             </div>
-            <TrendCard />
-            <button className='button r-button ' onClick={() => { setModalOpened(true) }} >
-                
-
-                share
-            </button>
-            <ShareModal
-                    modalOpened={modalOpened}
-                    setModalOpened={setModalOpened}
-                />
+           
+          
         </div>
     )
 }

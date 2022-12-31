@@ -4,6 +4,16 @@
   padding: 1rem;
   background-color: var(--cardColor);
   border-radius: 1rem;
+  
+}
+.PostDelete{
+  display: flex;
+  flex-direction: column;
+  margin-left: auto;
+
+  padding: 1rem;
+  background-color: var(--cardColor);
+  border-radius: 1rem;
   gap: 1rem;
 }
 .Post > img {

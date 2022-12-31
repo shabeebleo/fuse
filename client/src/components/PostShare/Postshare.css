@@ -28,7 +28,7 @@ height: 3rem ;
 
 .postOptions{
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 .options{
     padding: 5px;

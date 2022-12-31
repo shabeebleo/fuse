@@ -17,4 +17,4 @@ function ShareModel({modalOpened,setModalOpened}) {
     </Modal>
   );
 }
-export default ShareModel
+export default ShareModel 

@@ -2,13 +2,13 @@
 // const require = createRequire(import.meta.url);
 import {v2 as cloudinary} from 'cloudinary'
 // const cloudinary = require("cloudinary").v2;
-
-
+import dotenv from "dotenv";
+dotenv.config();
 
 cloudinary.config({
-  cloud_name: "dooc9crf3",
-  api_key: "267597387749432",
-  api_secret: "3dNkwI9lEirdt0uYPqLp6k-8G_8",
+  cloud_name: process.env.cloud_name,
+  api_key: process.env.api_key,
+  api_secret: process.env.api_secret,
 });
 
 // module.exports = { cloudinary };

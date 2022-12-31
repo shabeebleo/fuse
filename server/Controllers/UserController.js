@@ -1,20 +1,36 @@
 import UserModel from "../Models/userModel.js";
 import bcrypt from "bcrypt";
+import cloudinary from "../utils/cloudinary.js";
 //get a user
 
 export const getUser = async (req, res) => {
-
-
-const id=req.userId
+  const id = req.userId;
   try {
     const user = await UserModel.findById(id).select("-password");
-    
+
     if (user) {
       const userDetails = user._doc;
 
       res.status(200).json(userDetails);
     } else {
+      res.status(404).json("user does't exist");
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+// get profile data
 
+export const profileData = async (req, res) => {
+  const id = req.body;
+  try {
+    const user = await UserModel.findById(id).select("-password");
+
+    if (user) {
+      const userDetails = user._doc;
+
+      res.status(200).json(userDetails);
+    } else {
       res.status(404).json("user does't exist");
     }
   } catch (error) {
@@ -24,35 +40,45 @@ const id=req.userId
 //get all users
 
 export const getAllUsers = async (req, res) => {
-
-console.log("getAllUSErs")
-
-    try {
-      const allUsers = await UserModel.find().select("-password");
-      console.log(allUsers,"allUSersssss")
-      if (allUsers) {
-  //       const userDetails = allUsers._doc;
-  // console.log(userDetails,"userDetailsss............")
-        res.status(200).json(allUsers);
-      } else {
-  
-        res.status(404).json("user does't exist");
-      }
-    } catch (error) {
-      res.status(500).json(error);
+  try {
+    const allUsers = await UserModel.find().select("-password");
+    // console.log(allUsers, "allUSersssss");
+    if (allUsers) {
+      //       const userDetails = allUsers._doc;
+      // console.log(userDetails,"userDetailsss............")
+      res.status(200).json(allUsers);
+    } else {
+      res.status(404).json("user does't exist");
     }
-  };
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+//get all followers
 
+export const getFollowers = async (req, res) => {
+  const userId=req.params.id?req.params.id:req.userId
+  console.log(userId,"user Id in get followerssssssssssssssssssssssssssssssss")
+  try {
+    const allFollowers = await UserModel.findOne({_id:userId}).populate("followers");
+    console.log(allFollowers.followers, "allgetFollowers............allgetFollowers.....allgetFollowers");
+    if (allFollowers) {
+      //       const userDetails = allUsers._doc;
+      // console.log(userDetails,"userDetailsss............")
+      res.status(200).json(allFollowers.followers);
+    } else {
+      res.status(404).json("user does't exist");
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
 
+//password change user
 
-
-
-
-//update user
-
-export const updateUser = async (req, res) => {
+export const passwordChange = async (req, res) => {
   const id = req.params.id;
-
+  console.log(id);
   const { currentUserId, currentUserAdminStatus, password } = req.body;
 
   if (id === currentUserId || currentUserAdminStatus) {
@@ -70,6 +96,65 @@ export const updateUser = async (req, res) => {
     }
   } else {
     res.status(403).json("you can only update your account");
+  }
+};
+//update user
+
+export const updateUser = async (req, res) => {
+  const userId = req.params.id;
+  console.log(userId, "userID", req.userId, "req.userId");
+  console.log(req.files, "req.file");
+  if (!userId) {
+    res.status(400);
+    throw new Error("user not aquired");
+  }
+  if (userId != req.userId) {
+    res.status(500);
+    throw new Error("access denied");
+  }
+  console.log(req.body, "req.body....................89");
+
+  let profilePic;
+  if (req.files.profile) {
+    profilePic = req.files.profile[0];
+  }
+  console.log(profilePic, "profilepic....");
+  let coverPic;
+  if (req.files.cover) {
+    coverPic = req.files.cover[0];
+  }
+  console.log(coverPic, "coverPic....");
+  try {
+    console.log(" user update try  ethi");
+  
+    let resultCover
+    if (coverPic) {
+      resultCover = await cloudinary.uploader.upload(coverPic?.path);
+      req.body.coverPicture = resultCover.secure_url;
+      req.body.coverCloudinary_id = resultCover.public_id;
+    }
+    let resultProfile
+    if(profilePic){
+      resultProfile = await cloudinary.uploader.upload(profilePic?.path);
+      req.body.profilePic = resultProfile.secure_url;
+      req.body.coverCloudinary_id = resultProfile.public_id;
+    }
+
+    console.log(
+      "cloudinary",
+      resultProfile,
+      "resultProfile",
+      resultCover,
+      "resultCover"
+    );
+    req.body.profilePicture = resultProfile.secure_url;
+    req.body.profileCloudinary_id = resultProfile.public_id;
+
+    const response = await UserModel.findByIdAndUpdate(req.userId, req.body);
+    console.log(response, "response");
+    res.status(200).json(response);
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -94,7 +179,10 @@ export const deleteUser = async (req, res) => {
 
 export const followUnFollowUser = async (req, res) => {
   const id = req.params.id;
-  const { currentUserId } = req.body;
+  console.log(id, "idid");
+  const userId = req.userId;
+
+  const currentUserId = userId;
   if (currentUserId == id) {
     res.status(403).json("action forbidden");
   } else {
@@ -105,11 +193,10 @@ export const followUnFollowUser = async (req, res) => {
         await followUser.updateOne({ $push: { followers: currentUserId } });
         await followingUser.updateOne({ $push: { following: id } });
         res.status(200).json("user followed");
-      } else{
+      } else {
         await followUser.updateOne({ $pull: { followers: currentUserId } });
         await followingUser.updateOne({ $pull: { following: id } });
         res.status(200).json("user unfollowed");
-
       }
     } catch (error) {
       res.status(500).json(error);

@@ -4,10 +4,12 @@ import Post from "../Post/Post";
 import { useSelector, useDispatch } from "react-redux";
 import { setPosts } from "../../redux/postSlice";
 import axios from "axios";
+
 function Posts() {
   const dispatch = useDispatch();
   const { postData } = useSelector((state) => state.posts);
-  console.log(postData, "all postss");
+
+  console.log(postData, "all postss...............////...........");
   const getAllPosts = async () => {
     try {
       const response = await axios.get("/posts/timeline", {
@@ -15,6 +17,7 @@ function Posts() {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       });
+      console.log(response.data,"post response ")
       dispatch(setPosts(response.data));
     } catch (error) {}
   };

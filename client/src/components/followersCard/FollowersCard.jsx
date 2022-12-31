@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./FollowersCard.css";
-import { Followers } from "../../Data/FollowersData";
+// import { Followers } from "../../Data/FollowersData";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 function FollowersCard() {
   const { userData } = useSelector((state) => state.user);
   const [users, setUsers] = useState([]);
-  const [followingId, setfollowingId] = useState();
+  // const [followingId, setfollowingId] = useState();
   // const [followButton, setfollowButton] = useState(false);
   const userId = userData;
   const currentUserId = userData?._id;
@@ -42,6 +42,7 @@ function FollowersCard() {
     } catch (error) {
       console.log(error);
     }
+    getAllUsers();
   };
 
   const openProfile = (user) => {
@@ -72,10 +73,11 @@ function FollowersCard() {
                 alt=""
               />
               <div className="name">
-                <span>{follower.firstname}</span>
+                {/* <span>{follower.firstname}</span> */}
                 <span>@{follower.username}</span>
               </div>
             </div>
+            <div>
             <button
               className="button fc-button"
               onClick={() => {
@@ -85,15 +87,10 @@ function FollowersCard() {
               {follower.followers.includes(currentUserId)
                 ? "following"
                 : "follow"}
-              {/* {follower.followers.includes(currentUserId)
-                ? setfollowButton(true)
-                : setfollowButton(false)}
-              {console.log(
-                followButton,
-                "followButtonfollowButtonfollowButtonfollowButton"
-              )}
-              {followButton ? "following" : "follow"} */}
+             
             </button>
+            </div>
+          
           </div>
         );
       })}
