@@ -20,7 +20,8 @@ function RightSide() {
             <div className="navIcons">
                 <img src={Home} alt="" />
                 <img src={Noti} alt="" />
-                <UilSetting />
+                <img onClick={()=>{navigate("/chat")}} src={Comment} alt="" />
+                {/* <UilSetting /> */}
                 <img onClick={logOutt} src={logOut} alt="" />
             </div>
            

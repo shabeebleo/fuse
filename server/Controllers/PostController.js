@@ -158,12 +158,12 @@ export const deletePost = async (req, res) => {
       res.status(403).json("post not found");
     }
     if (post.userId != userId) {
-      console.log("fkuck Action forbidden");
-      res.status(403).json("Action forbidden");
+     
+      res.status(403).json({message:"Action forbidden",forbidden:true});
     } else {
       console.log("delete here");
       await post.deleteOne();
-      res.status(200).json("post deleted");
+      res.status(200).json({message:"post deleted",delete:true});
     }
   } catch (error) {
     res.status(500).json(error);

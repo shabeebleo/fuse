@@ -1,6 +1,7 @@
 import "./App.css";
 import Auth from "./pages/Auth/Auth";
 import Home from "./pages/home/Home";
+import Chat from "./pages/Chat/Chat";
 import Profile from "./pages/Profile/Profile";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
@@ -50,6 +51,15 @@ function App() {
                 <Profile />
               </ProtectedRoute>
             }
+          />
+          <Route
+
+          path="/chat" 
+          element={
+            <ProtectedRoute>
+              <Chat />
+            </ProtectedRoute>
+          }
           />
         </Routes>
       </div>

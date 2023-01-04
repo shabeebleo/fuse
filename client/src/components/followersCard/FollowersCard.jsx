@@ -4,7 +4,7 @@ import "./FollowersCard.css";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+import { toast } from "react-hot-toast";
 function FollowersCard() {
   const { userData } = useSelector((state) => state.user);
   const [users, setUsers] = useState([]);
@@ -37,8 +37,14 @@ function FollowersCard() {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       });
-      //  response.data=='user followed'?setfollowButton(true):setfollowButton(false)
-      // follower.followers.includes(currentUserId)?setfollowButton(true):setfollowButton(false)
+     if(response.data.success){
+      toast.success(response.data.message)
+     }else{
+      toast.error(response.data)
+     }
+      
+      console.log(response,"respnsse in follow")
+      
     } catch (error) {
       console.log(error);
     }

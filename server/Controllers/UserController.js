@@ -19,6 +19,25 @@ export const getUser = async (req, res) => {
     res.status(500).json(error);
   }
 };
+
+//get any user
+export const getAnyUser = async (req, res) => {
+  const id = req.params.id;
+  console.log(id,"user id in getAny user")
+  try {
+    const user = await UserModel.findById(id).select("-password");
+
+    if (user) {
+      const userDetails = user._doc;
+
+      res.status(200).json(userDetails);
+    } else {
+      res.status(404).json("user does't exist");
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
 // get profile data
 
 export const profileData = async (req, res) => {
@@ -192,7 +211,7 @@ export const followUnFollowUser = async (req, res) => {
       if (!followUser.followers.includes(currentUserId)) {
         await followUser.updateOne({ $push: { followers: currentUserId } });
         await followingUser.updateOne({ $push: { following: id } });
-        res.status(200).json("user followed");
+        res.status(200).json({message:"user followed",success:true});
       } else {
         await followUser.updateOne({ $pull: { followers: currentUserId } });
         await followingUser.updateOne({ $pull: { following: id } });

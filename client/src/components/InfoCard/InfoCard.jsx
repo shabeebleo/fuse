@@ -13,10 +13,13 @@ function InfoCard() {
   const userId = userData?._id;
   const [modalOpened, setModalOpened] = useState(false);
   const [myProfile, setMyProfile] = useState(false);
-
+console.log(myProfile,"myyprofileeeeee")
   useEffect(() => {
     if (userId == profileDetails._id) {
       setMyProfile(true);
+    }else{
+      setMyProfile(false);
+
     }
   }, [profileDetails]);
 

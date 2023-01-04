@@ -1,5 +1,5 @@
 import express from "express";
-import { getUser } from "../Controllers/UserController.js";
+import { getUser ,getAnyUser} from "../Controllers/UserController.js";
 import { passwordChange } from "../Controllers/UserController.js";
 import { updateUser } from "../Controllers/UserController.js";
 import { deleteUser } from "../Controllers/UserController.js";
@@ -27,6 +27,7 @@ router.post(
   updateUser
 );
 router.get("/profiledata/:id",protect,profileData)
+router.get("/:id",protect,getAnyUser)
 router.put("/:id", protect, passwordChange);
 router.delete("/:id", protect, deleteUser);
 router.put("/:id/follow", protect, followUnFollowUser);

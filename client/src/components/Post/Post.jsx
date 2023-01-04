@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { UilTimes } from "@iconscout/react-unicons";
 import { setPosts } from "../../redux/postSlice";
 import { hideloading, showloading } from "../../redux/alertSlice";
+import { toast } from "react-hot-toast";
 function Post({ data }) {
 
 
@@ -172,10 +173,15 @@ document.getElementById(commentId).style.display="none"
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
     })
+    console.log(response,"response in postDeleetre")
     dispatch(hideloading());
-    console.log(response,"user deleting response")
+    if(response.data.delete){
+      toast.error(response.data.message)
+     }
   } catch (error) {
+    toast.error(error.response.data.message)
     console.log(error)
+    dispatch(hideloading());
   }
  getAllPosts();
 
