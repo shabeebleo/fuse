@@ -77,10 +77,10 @@ export const getAllUsers = async (req, res) => {
 
 export const getFollowers = async (req, res) => {
   const userId=req.params.id?req.params.id:req.userId
-  console.log(userId,"user Id in get followerssssssssssssssssssssssssssssssss")
+  
   try {
     const allFollowers = await UserModel.findOne({_id:userId}).populate("followers");
-    console.log(allFollowers.followers, "allgetFollowers............allgetFollowers.....allgetFollowers");
+   
     if (allFollowers) {
       //       const userDetails = allUsers._doc;
       // console.log(userDetails,"userDetailsss............")

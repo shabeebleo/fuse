@@ -15,7 +15,7 @@ function ChatBox({ chat, currentUser, setSendMessage, receiveMessage }) {
   console.log(newMessage, "newMessage");
 
   useEffect(() => {
-    if (receiveMessage != null && receiveMessage.chatId == chat._id) {
+    if (receiveMessage != null && receiveMessage.chatId === chat._id) {
       setMessages([...messages, receiveMessage]);
     }
   }, [receiveMessage]);

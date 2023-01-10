@@ -88,7 +88,7 @@ function Chat() {
                 }}
               >
                 <Conversation
-                  data={chats}
+                  data={chat}
                   currentUserId={user?._id}
                   online={checkOnlineStatus(chat)}
                 />

@@ -37,21 +37,21 @@ function FollowersCard() {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       });
-     if(response.data.success){
-      toast.success(response.data.message)
-     }else{
-      toast.error(response.data)
-     }
-      
-      console.log(response,"respnsse in follow")
-      
+      if (response.data.success) {
+        toast.success(response.data.message);
+      } else {
+        toast.error(response.data);
+      }
+
+      console.log(response, "respnsse in follow");
     } catch (error) {
       console.log(error);
     }
     getAllUsers();
+
   };
 
-  const openProfile = (user) => {
+  const openProfile = async(user,id) => {
     console.log(
       user,
       "openProfileopenProfileopenProfileopenProfileopenProfile-------userId"
@@ -61,18 +61,38 @@ function FollowersCard() {
         userData: user,
       },
     });
-  };  
+    try {
+      console.log(id,"userId in opin profile")
+      const data={}
+      data.senderId=currentUserId
+      data.receiverId=id
+      const response = await axios.post("/chat",
+        data,
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        }
+      );
+      console.log(response,"response in 2nd function of followunfollow")
+    } catch (error) {
+      console.log(error);
+    }
+    console.log("navigating part in opin profile")
+  
+  };
 
   return (
     <div className="FollowersCard">
       <h3>Who is following you</h3>
       {users.map((follower, id) => {
+       
         return (
           <div className="follower" key={id}>
             <div>
               <img
                 onClick={() => {
-                  openProfile(follower);
+                  openProfile(follower,follower?._id);
                 }}
                 src={follower.profilePicture}
                 className="followerImg"
@@ -84,19 +104,17 @@ function FollowersCard() {
               </div>
             </div>
             <div>
-            <button
-              className="button fc-button"
-              onClick={() => {
-                followUnfollow(follower._id, follower);
-              }}
-            >
-              {follower.followers.includes(currentUserId)
-                ? "following"
-                : "follow"}
-             
-            </button>
+              <button
+                className="button fc-button"
+                onClick={() => {
+                  followUnfollow(follower._id, follower);
+                }}
+              >
+                {follower.followers.includes(currentUserId)
+                  ? "Unfollow"
+                  : "follow"}
+              </button>
             </div>
-          
           </div>
         );
       })}

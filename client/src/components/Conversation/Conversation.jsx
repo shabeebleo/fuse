@@ -13,7 +13,7 @@ function Conversation({ data, currentUserId,online }) {
   console.log(userData, "userSData 2nd");
   useEffect(() => {
     console.log("use usffect");
-    const userId = data[0].members.find((id) => id !== currentUserId);
+    const userId = data.members.find((id) => id !== currentUserId);
 
     const getUserData = async () => {
       try {
@@ -22,6 +22,7 @@ function Conversation({ data, currentUserId,online }) {
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
         });
+        console.log(response,"getUserData in conversatiion")
         setUserData(response.data);
       } catch (error) {
         console.log(error);

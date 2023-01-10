@@ -39,7 +39,8 @@ export const loginUser= async(req,res)=>{
   const{username,password}=req.body
 try {
   const user=await UserModel.findOne({username:username})
-if(user){
+
+if(user&&(user.isBlocked==false)){
   const valid=await bcrypt.compare(password,user.password)
 
   valid?res.status(200).json({user,success:true,token:generateToken(user._id)}):res.status(400).json({message:"wrong password"})

@@ -34,6 +34,7 @@ const UserSchema = mongoose.Schema(
       type: [mongoose.Schema.Types.ObjectId],
       ref: "Posts",
     },
+    isBlocked: { type: Boolean, default: false },
     profilePicture: String,
     profileCloudinary_id: String,
     coverCloudinary_id: String,

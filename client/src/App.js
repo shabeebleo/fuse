@@ -2,13 +2,16 @@ import "./App.css";
 import Auth from "./pages/Auth/Auth";
 import Home from "./pages/home/Home";
 import Chat from "./pages/Chat/Chat";
+import AdminLogin from "./pages/Admin/AdminLogin";
 import Profile from "./pages/Profile/Profile";
+import AdminHome from "./pages/Admin/AdminHome";
+import AdminUserlist from "./pages/Admin/AdminUserlist";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import { useSelector, useDispatch } from "react-redux";
+import "antd/dist/reset.css";
+import { useSelector } from "react-redux";
 import ProtectedRoute from "./components/ProtectedRoute.js";
 import PublicRoute from "./components/PublicRoute.js";
-import { useEffect } from "react";
 
 function App() {
   const { loading } = useSelector((state) => state.alerts);
@@ -53,14 +56,16 @@ function App() {
             }
           />
           <Route
-
-          path="/chat" 
-          element={
-            <ProtectedRoute>
-              <Chat />
-            </ProtectedRoute>
-          }
+            path="/chat"
+            element={
+              <ProtectedRoute>
+                <Chat />
+              </ProtectedRoute>
+            }
           />
+          <Route path="/admin" element={<AdminLogin />} />
+          <Route path="/adminHome" element={<AdminHome />} />
+          <Route path="/userList" element={<AdminUserlist />} />
         </Routes>
       </div>
     </BrowserRouter>

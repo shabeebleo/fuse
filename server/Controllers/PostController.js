@@ -25,17 +25,17 @@ export const createPost = async (req, res) => {
     console.log("try ethi");
     // const result = await cloudimage
     const result = await cloudinary.uploader.upload(image?.path);
-    console.log(result, "cloudinary resulttttt");
+
     (newPost.image = result.secure_url),
       (newPost.cloudinary_id = result.public_id);
     await newPost.save();
     const user = await UserModel.findById(userId);
-    console.log(user, "user,user in createPost");
+
     await user.updateOne({ $push: { posts: postId } });
 
     res.status(200).json("new post created");
   } catch (error) {
-    console.log("malar catch ");
+
     console.log(error);
     res.status(500).json(error);
   }
@@ -46,9 +46,9 @@ export const createPost = async (req, res) => {
 export const getPost = async (req, res) => {
   const Id = req.userId;
 
-  console.log(Id, "bodyyyygetPos22");
+
   try {
-    console.log(Id, "bodyyyygetPos24");
+  
     const post = await PostModel.findById(Id);
 
     res.status(200).json(post);
@@ -61,16 +61,16 @@ export const getPost = async (req, res) => {
 
 export const commentPost = async (req, res) => {
   const username = req.params.id;
-  console.log(username, "username comment", req.body, "reqbody.....");
+
   const { comment, postId } = req.body;
-  console.log(comment, "comment", postId, "postId");
+
   if (!comment) {
     res.status(404);
     throw new Error("Upload data not found.");
   }
   const newComment = new CommentModel(req.body);
   newComment.username = username;
-  console.log(newComment, "newComment622222");
+
   try {
     await newComment.save();
     res.status(200).json(newComment);
@@ -83,10 +83,10 @@ export const allComments = async (req, res) => {
   console.log("get all comments.....");
   const posstId = req.params.id;
   const postId = mongoose.Types.ObjectId(posstId);
-  console.log(postId, "postid in all comments");
+
   try {
     const comment = await CommentModel.find({ postId: postId });
-    console.log(comment, "commentss.. latest...in all comments.....");
+
     const sortedComments = comment.sort(function (a, b) {
       return b.date - a.date;
     });
@@ -99,18 +99,11 @@ export const allComments = async (req, res) => {
 //delete comment
 
 export const deleteComment = async (req, res) => {
-  console.log("deleteComment");
+
   const commentIdd = req.params.id;
   const commentId = mongoose.Types.ObjectId(commentIdd);
   const { username } = req.body;
-  console.log(
-    commentId,
-    "commentId",
-    username,
-    "username",
-    req.body,
-    "req.bodyreq.body"
-  );
+
   try {
     const comment = await CommentModel.findById(commentId);
     if (comment.username === username) {
@@ -144,16 +137,14 @@ export const updatePost = async (req, res) => {
 //delete a post
 
 export const deletePost = async (req, res) => {
-  console.log("deletePOST..............................");
+
   const postId = req.params.id;
-  console.log(postId, "postId in deletepost");
+
   const userId = req.userId;
-  console.log(userId, "userId in deletepost");
+
   try {
     const post = await PostModel.findById(postId);
-    console.log(post, "post inf delete post");
-    console.log(post._id, "postID inf delete post");
-    console.log(typeof(post.userId), post.userId, typeof(userId), userId, "postUserID inf delete post");
+
     if (!post) {
       res.status(403).json("post not found");
     }
@@ -173,12 +164,12 @@ export const deletePost = async (req, res) => {
 // like and dislike post
 
 export const likePost = async (req, res) => {
-  console.log("like ethi moneee");
+
   const postId = req.params.id;
-  console.log(postId, "postid in like ");
+
   const userId = req.userId;
 
-  console.log(userId, "userId in like ");
+
   try {
     const post = await PostModel.findById(postId);
     if (!post.likes.includes(userId)) {
@@ -197,21 +188,15 @@ export const likePost = async (req, res) => {
 
 export const getTimelinePosts = async (req, res) => {
   const userId = req.userId;
-  console.log(userId, "userId in timeline post");
+  
   try {
-    console.log("try ethi timeline");
+   
     const currentUserPosts = await PostModel.find({ userId: userId }).populate(
       "userId"
     );
-    console.log("new current posts");
-    console.log("new current posts");
-    console.log("new current posts");
-    console.log("new current posts");
-    console.log("new current posts");
-    console.log("new current posts");
-    console.log("new current posts");
+ 
 
-    console.log(currentUserPosts, "currentUserPosts");
+
     const followingPosts = await UserModel.aggregate([
       {
         $match: { _id: new mongoose.Types.ObjectId(userId) },
@@ -232,19 +217,14 @@ export const getTimelinePosts = async (req, res) => {
       },
     ]);
 
-    console.log(
-      followingPosts,
-      "followingPosts",
-      followingPosts[0].followingposts,
-      "followingPostsfollowingPostsfollowingPostsfollowingPostsfollowingPosts"
-    );
+  
     res.status(200).json(
       currentUserPosts.concat(followingPosts[0].followingposts).sort((a, b) => {
         return b.createdAt - a.createdAt;
       })
     );
   } catch (error) {
-    console.log("catch ethi timeline");
+
     res.status(500).json(error);
   }
 };
