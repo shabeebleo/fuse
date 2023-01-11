@@ -1,13 +1,9 @@
-import React,{ useEffect } from "react";
+import React from "react";
 import AdminLayout from "./AdminLayout";
-import { Form, Row, Input, Col, Button } from 'antd'
+
 
 function AdminHome() {
-
-
-
-  return (
-
+ return (
     <AdminLayout>
       <div>
         <h1>Admin Home</h1>

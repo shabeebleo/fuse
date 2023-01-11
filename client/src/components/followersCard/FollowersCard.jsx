@@ -5,6 +5,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import Pagination from "../Pagination/Pagination";
 function FollowersCard() {
   const { userData } = useSelector((state) => state.user);
   const [users, setUsers] = useState([]);
@@ -13,6 +14,8 @@ function FollowersCard() {
   const userId = userData;
   const currentUserId = userData?._id;
   const navigate = useNavigate();
+  const [currentFollowersPage, setcurrentFollowersPage] = useState(1);
+  const personsPerPage = 2;
 
   const getAllUsers = async () => {
     try {
@@ -48,10 +51,9 @@ function FollowersCard() {
       console.log(error);
     }
     getAllUsers();
-
   };
 
-  const openProfile = async(user,id) => {
+  const openProfile = async (user, id) => {
     console.log(
       user,
       "openProfileopenProfileopenProfileopenProfileopenProfile-------userId"
@@ -62,37 +64,47 @@ function FollowersCard() {
       },
     });
     try {
-      console.log(id,"userId in opin profile")
-      const data={}
-      data.senderId=currentUserId
-      data.receiverId=id
-      const response = await axios.post("/chat",
-        data,
-        {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        }
-      );
-      console.log(response,"response in 2nd function of followunfollow")
+      console.log(id, "userId in opin profile");
+      const data = {};
+      data.senderId = currentUserId;
+      data.receiverId = id;
+      const response = await axios.post("/chat", data, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+      console.log(response, "response in 2nd function of followunfollow");
     } catch (error) {
       console.log(error);
     }
-    console.log("navigating part in opin profile")
-  
+    console.log("navigating part in opin profile");
+  };
+
+  //get follower list by pagination
+
+  const indexofLastFollowersPerson = currentFollowersPage * personsPerPage;
+  const indexofFirstFollowersPerson =
+    indexofLastFollowersPerson - personsPerPage;
+  const currentFollowersList = users.slice(
+    indexofFirstFollowersPerson,
+    indexofLastFollowersPerson
+  );
+  console.log(currentFollowersList, "currentFollowersListcurrentFollowersList");
+  const followersPaginate = (pageNumber) => {
+    console.log(pageNumber, "pagenumber");
+    setcurrentFollowersPage(pageNumber);
   };
 
   return (
     <div className="FollowersCard">
       <h3>Who is following you</h3>
-      {users.map((follower, id) => {
-       
+      {currentFollowersList.map((follower, id) => {
         return (
           <div className="follower" key={id}>
             <div>
               <img
                 onClick={() => {
-                  openProfile(follower,follower?._id);
+                  openProfile(follower, follower._id);
                 }}
                 src={follower.profilePicture}
                 className="followerImg"
@@ -118,6 +130,11 @@ function FollowersCard() {
           </div>
         );
       })}
+      <Pagination
+        peoplePerPage={personsPerPage}
+        totalPersons={users.length}
+        paginate={followersPaginate}
+      />
     </div>
   );
 }

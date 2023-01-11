@@ -44,15 +44,13 @@ function Post({ data }) {
       setlikes((prev) => prev + 1);
     }
     try {
-      // console.log(liked, "liked");
-      // console.log(likes, "likes");
-      const response = await axios.put(`/posts/${data._id}/like`, userId, {
+  
+       await axios.put(`/posts/${data._id}/like`, userId, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       });
 
-      // console.log(response, "responseeeeeee,likePosttt");
     } catch (error) {
       console.log(error);
     }
@@ -72,7 +70,7 @@ function Post({ data }) {
 
   useEffect(() => {
     getAllPosts();
-  }, []);
+  }, [userData]);
 
 
 

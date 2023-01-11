@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import "./AdminLayout.css";
-import LogoutIcon from "@mui/icons-material/Logout";
+
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { Badge } from "antd";
+
+
 import logOut from '../../img/logOut.png'
 function AdminLayout({ children }) {
   const [collapsed, setcollapsed] = useState(false);
-  const [admin, setadmin] = useState(null);
+
 
   const location = useLocation();
   const navigate = useNavigate();
-  const Dispatch = useDispatch();
+
 
   const adminMenu = [
     {
@@ -36,7 +36,7 @@ function AdminLayout({ children }) {
       <div className="d-flex layout">
         <div className={collapsed ? "collapsed-sidebar" : "sidebar"}>
           <div className="sidebar-header">
-            <h1 className="logo"></h1>
+            <h1  className="logo" >FUSE</h1>
           </div>
           <div className="menu">
             {adminMenu.map((menu) => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import "./ProfileCard.css";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";

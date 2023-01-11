@@ -222,3 +222,14 @@ export const followUnFollowUser = async (req, res) => {
     }
   }
 };
+
+
+//user Ssearch
+
+export const getSearchUsers=async(req,res)=>{
+  const query=req.params.id
+  console.log(query,"queryyyyy")
+  const searchedUsers=await UserModel.find({"firstname":{ '$regex' :query, '$options' : 'i' } }).limit(10)
+  console.log(searchedUsers,"......searchedUsers")
+  res.json(searchedUsers)
+}

@@ -3,75 +3,80 @@ import "./Auth.css";
 import Logo from "../../img/logo.png";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Link,useNavigate } from "react-router-dom";
-import { useSelector,useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { hideloading, showloading } from "../../redux/alertSlice";
 function Auth() {
   const [isSignUp, setIsSignUp] = useState(true);
   const [data, setData] = useState({});
   const [confirmpass, setConfirmpass] = useState(true);
-const dispatch=useDispatch()
-  const navigate=useNavigate()
-// const reset=()=>{
-//   setConfirmpass(true)
-// }
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     setData({ ...data, [e.target.name]: e.target.value });
-    console.log(data,"dsdsdsdsd")
+    console.log(data, "dsdsdsdsd");
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
+    let confirmpas = true;
     e.preventDefault();
-    if(isSignUp){
-      try {
-        dispatch(showloading())
-        const response=await axios.post('/auth/register',data)
-        dispatch(hideloading())
-        if(response.data.success){
-          toast.success(response.data.message)
-          toast('redirecting to login page')
-          setIsSignUp(false)
-        }else{
-          console.log(response,"errorrr")
-          toast.error(response.data.message)
-        }
-        console.log(response,"response vanna")
-      } catch (error) {
-        dispatch(hideloading())
-        toast.error('something went wrong')
-      }     
-    }else{
-      try {
-        dispatch(showloading())
-        const response=await axios.post('/auth/login',data)
-        dispatch(hideloading())
-        if(response.data.success){
-          toast.success(response.data.message)
-          toast('redirecting to home page')
-          console.log(response,"respons")
-          localStorage.setItem("token",response.data.token)
-        navigate('/home')
-        }else{
-         
-          console.log(response,"errorrr")
-          toast.error(response.data.message)
-        }
-        console.log(response,"response vanna")
-      } catch (error) {
-        dispatch(hideloading())
-        toast.error('something went wrong')
+    console.log(confirmpass, "confirmpass");
+    if (isSignUp && data.confirmpass) {
+      if (data.password !== data.confirmpass) {
+        console.log("  setConfirmpass(false);");
+        setConfirmpass(false)
+        confirmpas = false;
+    
       }
-     
     }
- 
-  }
-  // if (isSignUp&&data.confirmpass) {
-  //   if (data.password !== data.confirmpass) setConfirmpass(false);
-  // }
+    if (isSignUp && confirmpas) {
+      try {
+        dispatch(showloading());
+        const response = await axios.post("/auth/register", data);
+        dispatch(hideloading());
+        if (response.data.success) {
+          toast.success(response.data.message);
+          toast("redirecting to login page");
+          setIsSignUp(false);
+        } else {
+          console.log(response, "errorrr");
+          toast.error(response.data.message);
+        }
+        console.log(response, "response vanna");
+      } catch (error) {
+        dispatch(hideloading());
+        toast.error("something went wrong");
+      }
+    } else {
+      try {
+        dispatch(showloading());
+        const response = await axios.post("/auth/login", data);
+        dispatch(hideloading());
+        if (response.data.success) {
+          toast.success(response.data.message);
+          toast("redirecting to home page");
+          console.log(response, "respons");
+          localStorage.setItem("token", response.data.token);
+          navigate("/home");
+        } else {
+          console.log(response, "errorrr");
+          toast.error(response.data.message);
+        }
+        console.log(response, "response vanna");
+      } catch (error) {
+        dispatch(hideloading());
+        toast.error("something went wrong");
+      }
+    }
+  };
+
   return (
     <div className="Auth">
       {/* left side */}
-      <div className="a-left">  ``
+      <div className="a-left">
+        {" "}
+        ``
         <img src={Logo} alt="" />
         <div className="webname">
           <h1>Fuse</h1>
@@ -115,7 +120,7 @@ const dispatch=useDispatch()
               style={{ fontSize: "12px", cursor: "pointer" }}
               onClick={() => {
                 setIsSignUp(true);
-                setData({})
+                setData({});
               }}
             >
               Don't have an account? Register!
@@ -190,7 +195,14 @@ const dispatch=useDispatch()
               value={data.confirmpass}
             />
           </div>
-          <span style={{ display: confirmpass ? "none" : "block" ,color:"red",fontSize:"14px",alignSelf:"flex-end"}} >
+          <span
+            style={{
+              display: confirmpass ? "none" : "block",
+              color: "red",
+              fontSize: "14px",
+              alignSelf: "flex-end",
+            }}
+          >
             *confirm password is not same
           </span>
           <div>
@@ -198,7 +210,7 @@ const dispatch=useDispatch()
               style={{ fontSize: "12px", cursor: "pointer" }}
               onClick={() => {
                 setIsSignUp(false);
-                setData({})
+                setData({});
               }}
             >
               Already have an account? Login!

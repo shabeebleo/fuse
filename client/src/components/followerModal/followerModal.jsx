@@ -50,19 +50,13 @@ export const FollowerModal = ({ modalOpened, setModalOpened ,profileUserId}) => 
   useEffect(() => {
     getFollowers();
   }, [userData]);
-  console.log(
-    users,
-    "users ...................................in followermodal"
-  );
+  
 
 
   useEffect(() => {
     getAllUsers();
   }, [userData]);
-  console.log(
-    users,
-    "users ...................................in followermodal"
-  );
+
   return (
     <Modal
       overlayColor={

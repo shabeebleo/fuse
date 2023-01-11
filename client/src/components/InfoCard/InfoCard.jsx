@@ -3,7 +3,7 @@ import "./InfoCard.css";
 import { useNavigate } from "react-router-dom";
 import { UilPen } from "@iconscout/react-unicons";
 import ProfileModal from "../ProfileModal/ProfileModal";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 function InfoCard() {
   const navigate = useNavigate();
@@ -15,13 +15,13 @@ function InfoCard() {
   const [myProfile, setMyProfile] = useState(false);
 console.log(myProfile,"myyprofileeeeee")
   useEffect(() => {
-    if (userId == profileDetails._id) {
+    if (userId === profileDetails._id) {
       setMyProfile(true);
     }else{
       setMyProfile(false);
 
     }
-  }, [profileDetails]);
+  }, [profileDetails,userId]);
 
   const logOut = () => {
     localStorage.removeItem("token");

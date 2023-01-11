@@ -2,9 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import Profile from "../../img/profileImg.jpg";
 import "./Postshare.css";
 import { UilScenery } from "@iconscout/react-unicons";
-import { UilPlayCircle } from "@iconscout/react-unicons";
-import { UilLocationPoint } from "@iconscout/react-unicons";
-import { UilSchedule } from "@iconscout/react-unicons";
 import { UilTimes } from "@iconscout/react-unicons";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "../../redux/postSlice";
@@ -56,18 +53,18 @@ function PostShare() {
   const uploadPost = async () => {
     try {
       dispatch(showloading());
-      // console.log(image, "imageimageimage");
+
       formData.userId = userId;
 
-      // console.log(formData, "formDa-newPost-taformDataformData");
+    
       const config = {
         headers: {
           "content-type": "multipart/form-data",
         },
       };
-      // console.log(formData, "formDamData");
-      const response = await axios.post(`/posts/createPost/${userId}`, formData, config);
-      // console.log(response, "response of post ethi maka");
+     
+     await axios.post(`/posts/createPost/${userId}`, formData, config);
+     
       reset();
       dispatch(hideloading());
     } catch (error) {
@@ -86,9 +83,9 @@ function PostShare() {
     uploadPost();
   };
   useEffect(() => {
-    // console.log(image, "useeffext image");
+
     setFormData({ ...formData, ...image });
-    // console.log(formData, "formData-useEffect");
+ 
   }, [image]);
 
   return (

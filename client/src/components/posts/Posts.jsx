@@ -24,6 +24,7 @@ function Posts() {
 
   useEffect(() => {
     getAllPosts();
+    // eslint-disable-next-line
   }, []);
 
   return (

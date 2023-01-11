@@ -37,7 +37,7 @@ function Chat() {
     socket.current.on("get-users", (users) => {
       setOnlineUsers(users);
     });
-  }, [userData]);
+  }, [user?._id]);
 
   // receive message from socket server
 
