@@ -3,49 +3,45 @@ import { Modal, useMantineTheme } from "@mantine/core";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import "./FollowerModal.css";
-export const FollowerModal = ({ modalOpened, setModalOpened ,profileUserId}) => {
-    console.log(profileUserId,"profileUserId.............")
+export const FollowerModal = ({ modalOpened, setModalOpened ,profileUserId,followerClick}) => {
+    console.log(profileUserId,followerClick,"profileUserId.............")
   const { userData } = useSelector((state) => state.user);
   console.log(userData,"userData in followerModalllll")
   const userId = userData?._id;
-  const [users, setUsers] = useState([]);
+  // const [users, setUsers] = useState([]);
   const [followers, setFollowers] = useState([])
   const theme = useMantineTheme();
 
-  const getAllUsers = async () => {
-    try {
-      const response = await axios.get("/user/getAllUsers");
-      console.log(response.data, "all userssssssssss.........");
-      setUsers(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-//   const getFollowers=async()=>{
-//     try {
-//         const response = await axios.get("/user/followers");
-//         console.log(response.data, "all followers.........");
-//         setFollowers(response.data);
-//       } catch (error) {
-//         console.log(error);
-//       }
-// }
+  // const getAllUsers = async () => {
+  //   try {
+  //     const response = await axios.get("/user/getAllUsers");
+  //     console.log(response.data, "all userssssssssss.........");
+  //     setUsers(response.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
 
 
 //to get follower data.....
   const getFollowers = async () => {
-    try {
-      const response = await axios.get(`/user/followers/${profileUserId?profileUserId:userId}`,{
-        headers: {
-          Authorization: "Bearer " + localStorage.getItem("token")
-        },
-      });
-
-      console.log(response.data,"getData ethi mon     getFollowersgetFollowersgetFollowersgetFollowersgetFollowers");
-      setFollowers(response.data)
-    } catch (error) {
-      console.log(error);
+    if(followerClick){
+      console.log("in thi try getfollowers")
+      try {
+        const response = await axios.get(`/user/followers/${profileUserId?profileUserId:userId}`,{
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token")
+          },
+        });
+  
+        console.log(response.data,"getData ethi mon     getFollowersgetFollowersgetFollowersgetFollowersgetFollowers");
+        setFollowers(response.data)
+      } catch (error) {
+        console.log(error);
+      }
     }
+   
   };
   useEffect(() => {
     getFollowers();
@@ -53,9 +49,9 @@ export const FollowerModal = ({ modalOpened, setModalOpened ,profileUserId}) => 
   
 
 
-  useEffect(() => {
-    getAllUsers();
-  }, [userData]);
+  // useEffect(() => {
+  //   getAllUsers();
+  // }, [userData]);
 
   return (
     <Modal
@@ -66,7 +62,7 @@ export const FollowerModal = ({ modalOpened, setModalOpened ,profileUserId}) => 
       }
       overlayOpacity={0.55}
       overlayBlur={3}
-      size="30%"
+      size="30%"rs
       opened={modalOpened}
       onClose={() => {
         setModalOpened(false);

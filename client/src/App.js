@@ -12,7 +12,7 @@ import "antd/dist/reset.css";
 import { useSelector } from "react-redux";
 import ProtectedRoute from "./components/ProtectedRoute.js";
 import PublicRoute from "./components/PublicRoute.js";
-
+import ProtectedRouteAdmin from "./components/ProtectedRouteAdmin.js";
 function App() {
   const { loading } = useSelector((state) => state.alerts);
 
@@ -64,8 +64,8 @@ function App() {
             }
           />
           <Route path="/admin" element={<AdminLogin />} />
-          <Route path="/adminHome" element={<AdminHome />} />
-          <Route path="/userList" element={<AdminUserlist />} />
+          <Route path="/adminHome" element={<ProtectedRouteAdmin><AdminHome /></ProtectedRouteAdmin>} />
+          <Route path="/userList" element={<ProtectedRouteAdmin><AdminUserlist /></ProtectedRouteAdmin>} />
         </Routes>
       </div>
     </BrowserRouter>

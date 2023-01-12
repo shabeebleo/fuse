@@ -28,7 +28,11 @@ function AdminUserlist() {
   const handleUserStatus = async (id) => {
     try {
       dispatch(showloading());
-      const response = await axios.put(`/admin/userStatusChange/${id}`);
+      const response = await axios.put(`/admin/userStatusChange/${id}`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("adminToken"),
+        },
+      });
       dispatch(hideloading());
       if (response.data.status) {
         localStorage.removeItem("token");

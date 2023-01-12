@@ -26,9 +26,9 @@ function AdminLayout({ children }) {
     },
   ];
 
-  const logOutt=()=>{
-    console.log("log")
+  const logOutt=()=>{  
     navigate("/admin")
+    localStorage.removeItem("adminToken")
   }
 
   return (
@@ -60,7 +60,7 @@ function AdminLayout({ children }) {
               }}
             >
               <i className="ri-logout-circle-line"></i>
-              {!collapsed && <Link to="/admin">Logout</Link>}
+              {!collapsed && <Link to="/admin" onClick={()=>{localStorage.removeItem("adminToken")}}>Logout</Link>}
             </div>
           </div>
         </div>

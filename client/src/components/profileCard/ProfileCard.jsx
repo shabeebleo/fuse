@@ -12,7 +12,7 @@ function ProfileCard() {
   var { userData } = useSelector((state) => state.user);
   const { postData } = useSelector((state) => state.posts);
   const ProfilePage = true;
-
+const [followerClick, setfollowerClick] = useState(false)
 const profileUserId=profileDetails?._id
 console.log(profileDetails,"profileeeeeeeeeedetaillssssssssss in  profile card",profileUserId)
 
@@ -20,6 +20,7 @@ console.log(profileDetails,"profileeeeeeeeeedetaillssssssssss in  profile card",
   ///followeresw modal
   const followersModal = () => {
     setModalOpened(true);
+  
   };
 
   return (
@@ -60,11 +61,12 @@ console.log(profileDetails,"profileeeeeeeeeedetaillssssssssss in  profile card",
           <div className="follow">
             <div>
           
-              <span onClick={followersModal}>followers </span>
+              <span onClick={()=>{followersModal(  setfollowerClick(true))}}>followers </span>
               <FollowerModal
                 modalOpened={modalOpened}
                 setModalOpened={setModalOpened}
                 profileUserId={profileUserId}
+                followerClick={followerClick}
               />
             </div>
 
@@ -73,7 +75,7 @@ console.log(profileDetails,"profileeeeeeeeeedetaillssssssssss in  profile card",
           </div>
           <div className="vl"></div>
           <div className="follow">
-            <span onClick={followersModal}>following</span>
+            <span onClick={()=>{followersModal(  setfollowerClick(false))}}>following</span>
           
             <span>{profileDetails
               ? profileDetails.following.length:userData?.following.length}</span>

@@ -5,7 +5,7 @@ import  adminProtect  from "../middlewares/adminauthMiddleware.js";
 const router = express.Router();
 
 router.post("/login",loginAdmin)
-router.get("/getUsers",getAllUsers)
+router.get("/getUsers",adminProtect,getAllUsers)
 router.put("/userStatusChange/:id",userStatusChange)
 
 export default router 
