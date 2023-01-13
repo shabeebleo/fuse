@@ -1,10 +1,9 @@
-import axios from "axios";
+import axios from "../../axios/axios";
 import React, { useEffect, useRef } from "react";
-
 import { useState } from "react";
 import "./ChatBox.css";
 
-import { format } from "timeago.js";
+import moment from 'moment'
 import InputEmoji from "react-input-emoji";
 function ChatBox({ chat, currentUser, setSendMessage, receiveMessage }) {
   const [userData, setUserData] = useState(null);
@@ -20,6 +19,7 @@ function ChatBox({ chat, currentUser, setSendMessage, receiveMessage }) {
     if (receiveMessage != null && receiveMessage.chatId === chat._id) {
       setMessages([...messages, receiveMessage]);
     }
+      // eslint-disable-next-line
   }, [receiveMessage]);
 
   // fetching data for the header of chat box
@@ -159,7 +159,8 @@ function ChatBox({ chat, currentUser, setSendMessage, receiveMessage }) {
                       }
                     >
                       <span>{message.text}</span>{" "}
-                      <span>{format(message.createdAt)}</span>
+                      <span>{moment(message.createdAt).fromNow()}</span>
+                     
                     </div>
                   </>
                 ))}

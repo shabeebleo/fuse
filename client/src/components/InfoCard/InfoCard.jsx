@@ -6,6 +6,7 @@ import ProfileModal from "../ProfileModal/ProfileModal";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 function InfoCard() {
+
   const navigate = useNavigate();
   const location = useLocation();
   let profileDetails = location?.state?.userData;
@@ -13,15 +14,14 @@ function InfoCard() {
   const userId = userData?._id;
   const [modalOpened, setModalOpened] = useState(false);
   const [myProfile, setMyProfile] = useState(false);
-console.log(myProfile,"myyprofileeeeee")
+  
   useEffect(() => {
     if (userId === profileDetails._id) {
       setMyProfile(true);
-    }else{
+    } else {
       setMyProfile(false);
-
     }
-  }, [profileDetails,userId]);
+  }, [profileDetails, userId]);
 
   const logOut = () => {
     localStorage.removeItem("token");

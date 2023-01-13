@@ -4,7 +4,7 @@ import Comment from "../../img/comment.png";
 import Share from "../../img/share.png";
 import Heart from "../../img/like.png";
 import Notlike from "../../img/notlike.png";
-import axios from "axios";
+import axios from "../../axios/axios";
 import { useSelector, useDispatch } from "react-redux";
 import { UilTimes } from "@iconscout/react-unicons";
 import { setPosts } from "../../redux/postSlice";
@@ -58,18 +58,20 @@ function Post({ data }) {
 
   const getAllPosts = async () => {
     try {
+     // eslint-disable-next-line
       const response = await axios.get("/posts/timeline", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       });
-      console.log(response.data,"post response ")
+    
       dispatch(setPosts(response.data));
     } catch (error) {}
   };
 
   useEffect(() => {
     getAllPosts();
+    // eslint-disable-next-line
   }, [userData]);
 
 
@@ -89,12 +91,7 @@ function Post({ data }) {
     const commentData = {};
     commentData.comment = comment;
     commentData.postId = postId;
-    // console.log(
-    //   comment,
-    //   "comment ethi mone",
-    //   commentData,
-    //   "commentData ethi mone"
-    // );
+
 
     try {
       const config = {
@@ -107,12 +104,9 @@ function Post({ data }) {
         commentData,
         config
       );
-      // console.log(response, "responseeeeeeee");
+  
       setallComments([response.data, ...allComments]);
-      // console.log(
-      //   allComments,
-      //   "after new cokmment allCommentsallCommentsallCommentsallCommentsallCommentsallCommentsallCommentsallComments"
-      // );
+    
     } catch (error) {
       console.log(error);
     }
@@ -121,15 +115,15 @@ function Post({ data }) {
   //deleteComments
 
   const deleteComments = async (commentId) => {
-    // console.log(username, "username in delete commets");
+   
     try {
-     
-      const response = await axios.post(
+    
+      await axios.post(
         `/posts/delete/${commentId}`,
         {username:username}
       );
 document.getElementById(commentId).style.display="none"
-      // console.log(response, "delete response");
+     
     } catch (error) {
       console.log(error);
     }
@@ -139,7 +133,7 @@ document.getElementById(commentId).style.display="none"
   //getComments
   const getComments = async () => {
     setnwComment(true);
-    // console.log("alll commmeeentsssssssssssssssss");
+
     try {
       const config = {
         headers: {
@@ -148,19 +142,15 @@ document.getElementById(commentId).style.display="none"
       };
       const response = await axios.get(`posts/${postId}/allComments`, config);
 
-      // console.log(response, "alllcomements response");
+   
       const sortedComments = response.data.sort(function (a, b) {
         return b.date - a.date;
       });
-      // console.log(response.data, "sortedComments");
+
 
       setallComments(sortedComments);
     } catch (error) {}
   };
-  // console.log(
-  //   allComments,
-  //   "allCommentsallCommentsallCommentsallCommentsallCommentsallComments"
-  // );
 
  const postDelete=async()=>{
 

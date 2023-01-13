@@ -3,7 +3,7 @@ import "./Posts.css";
 import Post from "../Post/Post";
 import { useSelector, useDispatch } from "react-redux";
 import { setPosts } from "../../redux/postSlice";
-import axios from "axios";
+import axios from "../../axios/axios";
 
 function Posts() {
   const dispatch = useDispatch();

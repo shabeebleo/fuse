@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "../../redux/postSlice";
 import { hideloading, showloading } from "../../redux/alertSlice";
 import { toast } from "react-hot-toast";
-import axios from "axios";
+import axios from "../../axios/axios";
 
 function PostShare() {
   const dispatch = useDispatch();
@@ -85,7 +85,7 @@ function PostShare() {
   useEffect(() => {
 
     setFormData({ ...formData, ...image });
- 
+   // eslint-disable-next-line
   }, [image]);
 
   return (

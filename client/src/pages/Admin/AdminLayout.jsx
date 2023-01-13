@@ -1,17 +1,12 @@
 import React, { useState } from "react";
 import "./AdminLayout.css";
-
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import logOut from "../../img/logOut.png";
 
-
-import logOut from '../../img/logOut.png'
 function AdminLayout({ children }) {
   const [collapsed, setcollapsed] = useState(false);
-
-
   const location = useLocation();
   const navigate = useNavigate();
-
 
   const adminMenu = [
     {
@@ -26,17 +21,17 @@ function AdminLayout({ children }) {
     },
   ];
 
-  const logOutt=()=>{  
-    navigate("/admin")
-    localStorage.removeItem("adminToken")
-  }
+  const logOutt = () => {
+    navigate("/admin");
+    localStorage.removeItem("adminToken");
+  };
 
   return (
     <div className="main">
       <div className="d-flex layout">
         <div className={collapsed ? "collapsed-sidebar" : "sidebar"}>
           <div className="sidebar-header">
-            <h1  className="logo" >FUSE</h1>
+            <h1 className="logo">FUSE</h1>
           </div>
           <div className="menu">
             {adminMenu.map((menu) => {
@@ -55,12 +50,21 @@ function AdminLayout({ children }) {
             <div
               className={`d-flex menu-item`}
               onClick={() => {
-                  navigate("/admin");
-                  localStorage.removeItem("adminToken");
+                navigate("/admin");
+                localStorage.removeItem("adminToken");
               }}
             >
               <i className="ri-logout-circle-line"></i>
-              {!collapsed && <Link to="/admin" onClick={()=>{localStorage.removeItem("adminToken")}}>Logout</Link>}
+              {!collapsed && (
+                <Link
+                  to="/admin"
+                  onClick={() => {
+                    localStorage.removeItem("adminToken");
+                  }}
+                >
+                  Logout
+                </Link>
+              )}
             </div>
           </div>
         </div>
@@ -81,14 +85,13 @@ function AdminLayout({ children }) {
                 }}
               ></i>
             )}
-                     <div className="d-flex align-items-center px-3">
-              {/* <Badge className="mx-3" size="default" count={user?.unseenNotifications.length} onClick={()=>navigate('/notifications')}>
-                <i className="ri-notification-line header-action-icon"></i>
-              </Badge> */}
-              
-            
-              {/* <LogoutIcon onClick={logOutt}/> */}
-              <img src={logOut} style={{width:"1.5rem" ,height:"1.5rem"}} onClick={logOutt} alt="" />
+            <div className="d-flex align-items-center px-3">         
+              <img
+                src={logOut}
+                style={{ width: "1.5rem", height: "1.5rem" }}
+                onClick={logOutt}
+                alt=""
+              />
             </div>
           </div>
           <div className="body">{children}</div>

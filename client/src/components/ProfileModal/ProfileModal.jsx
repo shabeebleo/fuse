@@ -1,22 +1,21 @@
 import { Modal, useMantineTheme } from "@mantine/core";
-import React, { useState, useRef, useEffect } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
+import axios from "../../axios/axios";
 import { toast } from "react-hot-toast";
 import { hideloading, showloading } from "../../redux/alertSlice.js";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch} from "react-redux";
 function ProfileModal({ modalOpened, setModalOpened }) {
   const dispatch = useDispatch();
   const theme = useMantineTheme();
   const [profileImage, setprofileImage] = useState(null);
   const [coverImage, setcoverImage] = useState(null);
   const [formData, setFormData] = useState({});
-  // const { userData } = useSelector((state) => state.user);
-  // const userId = userData?._id;
+
   const[userData,setuserData]=useState()
  const userId=userData?._id
 
 
-  // console.log(userData,"userData......................... in profilemodallllllllllll")
+ 
 
 
 
@@ -28,7 +27,7 @@ function ProfileModal({ modalOpened, setModalOpened }) {
         },
       });
 
-      // console.log(response.data,"getData ethi mon");
+    
       setuserData(response.data)
     } catch (error) {
       console.log(error);
@@ -37,6 +36,7 @@ function ProfileModal({ modalOpened, setModalOpened }) {
 
   useEffect(() => {
     getData()
+// eslint-disable-next-line
   }, [])
 
 
@@ -112,6 +112,7 @@ function ProfileModal({ modalOpened, setModalOpened }) {
     // console.log(profileImage, "useeffext image");
     setFormData({ ...formData, ...profileImage,...coverImage });
     // console.log(formData, "formData-useEffect");
+    // eslint-disable-next-line
   }, [profileImage,coverImage]);
 
   return (

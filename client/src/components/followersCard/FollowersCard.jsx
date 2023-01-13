@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from "react";
 import "./FollowersCard.css";
-// import { Followers } from "../../Data/FollowersData";
-import axios from "axios";
+import axios from "../../axios/axios";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import Pagination from "../Pagination/Pagination";
+
 function FollowersCard() {
   const { userData } = useSelector((state) => state.user);
   const [users, setUsers] = useState([]);
-  // const [followingId, setfollowingId] = useState();
-  // const [followButton, setfollowButton] = useState(false);
   const userId = userData;
   const currentUserId = userData?._id;
   const navigate = useNavigate();
   const [currentFollowersPage, setcurrentFollowersPage] = useState(1);
   const personsPerPage = 2;
-
   const getAllUsers = async () => {
     try {
       const response = await axios.get("/user/getAllUsers");
@@ -30,8 +27,6 @@ function FollowersCard() {
   useEffect(() => {
     getAllUsers();
   }, [userId]);
-
-  console.log(users, "users .................. frdom............... state");
 
   const followUnfollow = async (id, follower) => {
     try {
@@ -54,10 +49,6 @@ function FollowersCard() {
   };
 
   const openProfile = async (user, id) => {
-    console.log(
-      user,
-      "openProfileopenProfileopenProfileopenProfileopenProfile-------userId"
-    );
     navigate("/profile", {
       state: {
         userData: user,
@@ -111,7 +102,6 @@ function FollowersCard() {
                 alt=""
               />
               <div className="name">
-                {/* <span>{follower.firstname}</span> */}
                 <span>@{follower.username}</span>
               </div>
             </div>

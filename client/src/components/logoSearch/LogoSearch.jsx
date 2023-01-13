@@ -3,7 +3,7 @@ import Logo from "../../img/logo.png";
 import { UilSearch } from "@iconscout/react-unicons";
 import { useNavigate } from "react-router-dom";
 import "./LogoSearch.css";
-import axios from "axios";
+import axios from "../../axios/axios";
 import { useSelector } from "react-redux";
 import { UilTimes } from "@iconscout/react-unicons";
 function LogoSearch() {
@@ -12,7 +12,9 @@ function LogoSearch() {
   const navigate = useNavigate();
   const { userData } = useSelector((state) => state.user);
   const currentUserId = userData?._id;
+
   //searchUser
+
   const searchUser = async (query) => {
     console.log(query, "queryyyyy");
     const data = await axios.get(`/user/searchUser/${query}`);
@@ -53,6 +55,7 @@ function LogoSearch() {
     }
     console.log("navigating part in opin profile");
   };
+
   return (
     <div className="searchPart">
       {" "}
@@ -81,31 +84,31 @@ function LogoSearch() {
       </div>
       <div className="allSearchPart">
         <div className="closeIcon">
-        {query  && (
-        <UilTimes
-          onClick={() => {
-            setQuery(null);
-          }}
-        />
-      )}
-        </div>
-  
-      {query&&data?.map((user) => {
-        return (
-          <div className="userSearch">
-            <span
+          {query && (
+            <UilTimes
               onClick={() => {
-                openProfile(user, user?._id);
+                setQuery(null);
               }}
-            >
-              {user.firstname}
-            </span>
-            <div></div>
-          </div>
-        );
-      })}
+            />
+          )}
+        </div>
+
+        {query &&
+          data?.map((user) => {
+            return (
+              <div className="userSearch">
+                <span
+                  onClick={() => {
+                    openProfile(user, user?._id);
+                  }}
+                >
+                  {user.firstname}
+                </span>
+                <div></div>
+              </div>
+            );
+          })}
       </div>
-  
     </div>
   );
 }

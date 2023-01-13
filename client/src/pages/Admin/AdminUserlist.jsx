@@ -6,7 +6,7 @@ import PersonOffIcon from "@mui/icons-material/PersonOff";
 import { hideloading, showloading } from "../../redux/alertSlice";
 import Pagination from "./Pagination/Pagination";
 import toast from "react-hot-toast";
-import axios from "axios";
+import axios from "../../axios/axios";
 function AdminUserlist() {
   const dispatch = useDispatch();
   const [users, setUsers] = useState([]);
@@ -55,6 +55,7 @@ function AdminUserlist() {
     }
   };
 
+
   useEffect(() => {
     (async () => {
       try {
@@ -77,8 +78,9 @@ function AdminUserlist() {
         toast.error(error.response.data.message);
       }
     })();
+    // eslint-disable-next-line
   },[]);
-console.log(currentUserList,"currentUserListcurrentUserList");
+
   return (
     <AdminLayout>
       <div>
@@ -87,7 +89,6 @@ console.log(currentUserList,"currentUserListcurrentUserList");
           <span className="col-1">
             <b>Sl.No</b>
           </span>
-
           <span className="col-2">
             <b>Username</b>
           </span>

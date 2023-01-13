@@ -8,6 +8,7 @@ import PostRoute from "./Routes/PostRoute.js";
 import ChatRoute from "./Routes/ChatRoute.js";
 import MessageRoute from "./Routes/MessageRoute.js"
 import AdminRoute from "./Routes/AdminRoute.js"
+import cors from 'cors'
 //route
 const app = express();
 
@@ -15,7 +16,7 @@ const app = express();
 
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
-
+app.use(cors({origin:'http://localhost:3000'}))
 dotenv.config();
 
 mongoose

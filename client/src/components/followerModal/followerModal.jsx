@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Modal, useMantineTheme } from "@mantine/core";
 import { useSelector } from "react-redux";
-import axios from "axios";
+import axios from "../../axios/axios";
 import "./FollowerModal.css";
 export const FollowerModal = ({ modalOpened, setModalOpened ,profileUserId,followerClick}) => {
     console.log(profileUserId,followerClick,"profileUserId.............")
@@ -45,13 +45,10 @@ export const FollowerModal = ({ modalOpened, setModalOpened ,profileUserId,follo
   };
   useEffect(() => {
     getFollowers();
+    // eslint-disable-next-line
   }, [userData]);
   
 
-
-  // useEffect(() => {
-  //   getAllUsers();
-  // }, [userData]);
 
   return (
     <Modal

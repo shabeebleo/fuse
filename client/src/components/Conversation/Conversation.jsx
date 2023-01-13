@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../axios/axios";
 import React, { useEffect, useState } from "react";
 
 function Conversation({ data, currentUserId,online }) {

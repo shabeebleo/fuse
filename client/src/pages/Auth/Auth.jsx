@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import "./Auth.css";
 import Logo from "../../img/logo.png";
-import axios from "axios";
+import axios from "../../axios/axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { hideloading, showloading } from "../../redux/alertSlice";
+
 function Auth() {
   const [isSignUp, setIsSignUp] = useState(true);
   const [data, setData] = useState({});
@@ -25,9 +26,8 @@ function Auth() {
     if (isSignUp && data.confirmpass) {
       if (data.password !== data.confirmpass) {
         console.log("  setConfirmpass(false);");
-        setConfirmpass(false)
+        setConfirmpass(false);
         confirmpas = false;
-    
       }
     }
     if (isSignUp && confirmpas) {
